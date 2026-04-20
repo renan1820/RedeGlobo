@@ -1,0 +1,19 @@
+query SearchContentQuery($name: String, $page: Int) {
+  characters(page: $page, filter: { name: $name }) {
+    info {
+      count
+      pages
+      next
+    }
+    results {
+      id
+      name
+      status
+      species
+      image
+      origin {
+        name
+      }
+    }
+  }
+}

@@ -1,0 +1,125 @@
+[versions]
+agp = "9.1.1"
+kotlin = "2.1.20"
+ksp = "2.1.20-1.0.32"
+composeBom = "2025.04.00"
+composeTv = "1.0.0"
+hilt = "2.56.1"
+hiltNavigationCompose = "1.2.0"
+apollo = "4.1.0"
+rxjava3 = "3.1.10"
+rxkotlin = "3.0.1"
+rxandroid = "3.0.2"
+room = "2.7.1"
+lifecycle = "2.9.0"
+navigation = "2.9.0"
+coroutines = "1.10.1"
+okhttp = "4.12.0"
+coil = "2.7.0"
+coreKtx = "1.16.0"
+appcompat = "1.7.0"
+material = "1.12.0"
+javaxInject = "1"
+
+# Testing
+junit4 = "4.13.2"
+junitExt = "1.2.1"
+mockk = "1.14.2"
+truth = "1.4.4"
+turbine = "1.2.0"
+androidxTest = "1.6.1"
+espressoCore = "3.6.1"
+
+[libraries]
+# AndroidX Core
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Compose BOM
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+
+# Compose for TV
+compose-tv-foundation = { group = "androidx.tv", name = "tv-foundation", version.ref = "composeTv" }
+compose-tv-material = { group = "androidx.tv", name = "tv-material", version.ref = "composeTv" }
+
+# Navigation
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# Lifecycle + ViewModel
+lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+
+# Apollo GraphQL
+apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+apollo-rx3 = { group = "com.apollographql.apollo", name = "apollo-rx3-support", version.ref = "apollo" }
+apollo-normalized-cache = { group = "com.apollographql.apollo", name = "apollo-normalized-cache", version.ref = "apollo" }
+apollo-normalized-cache-sqlite = { group = "com.apollographql.apollo", name = "apollo-normalized-cache-sqlite", version.ref = "apollo" }
+
+# RxJava 3
+rxjava3 = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxjava3" }
+rxkotlin = { group = "io.reactivex.rxjava3", name = "rxkotlin", version.ref = "rxkotlin" }
+rxandroid = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxandroid" }
+
+# Room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-rxjava3 = { group = "androidx.room", name = "room-rxjava3", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# OkHttp
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+# Coil
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+
+# Coroutines
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-rx3 = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-rx3", version.ref = "coroutines" }
+
+# Testing
+junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitExt" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTest" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTest" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+hilt-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+
+[bundles]
+rxjava = ["rxjava3", "rxkotlin", "rxandroid"]
+room = ["room-runtime", "room-ktx", "room-rxjava3"]
+compose-core = ["compose-ui", "compose-ui-graphics", "compose-ui-tooling-preview", "compose-material3", "compose-runtime"]
+lifecycle = ["lifecycle-viewmodel-compose", "lifecycle-runtime-compose", "lifecycle-runtime-ktx"]
+testing-unit = ["junit4", "mockk", "truth", "turbine", "coroutines-test"]
+testing-android = ["mockk-android", "hilt-testing", "compose-ui-test-junit4", "androidx-junit"]
+apollo = ["apollo-runtime", "apollo-rx3", "apollo-normalized-cache", "apollo-normalized-cache-sqlite"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }

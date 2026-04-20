@@ -1,0 +1,30 @@
+query ContentDetailQuery($id: ID!) {
+  character(id: $id) {
+    id
+    name
+    status
+    species
+    type
+    gender
+    image
+    origin {
+      id
+      name
+      type
+      dimension
+    }
+    location {
+      id
+      name
+      type
+    }
+    episode {
+      id
+      name
+      episode
+      air_date
+      created
+    }
+    created
+  }
+}
