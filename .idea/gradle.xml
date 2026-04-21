@@ -5,11 +5,23 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="jbr-21" />
+        <option name="resolveModulePerSourceSet" value="false" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core/core-common" />
+            <option value="$PROJECT_DIR$/core/core-domain" />
+            <option value="$PROJECT_DIR$/core/core-network" />
+            <option value="$PROJECT_DIR$/core/core-database" />
+            <option value="$PROJECT_DIR$/core/core-ui" />
+            <option value="$PROJECT_DIR$/data/data-content" />
+            <option value="$PROJECT_DIR$/feature/feature-home" />
+            <option value="$PROJECT_DIR$/feature/feature-detail" />
+            <option value="$PROJECT_DIR$/feature/feature-search" />
           </set>
         </option>
       </GradleProjectSettings>
