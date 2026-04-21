@@ -6,9 +6,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.tv.material3.ExperimentalTvMaterial3Api
 import androidx.tv.material3.Surface
-import com.gitproject.redeglobo.detail.ui.DetailScreen
+import com.gitproject.redeglobo.detail.ui.DetailScreenTv
 import com.gitproject.redeglobo.domain.model.NavigationDestination
 import com.gitproject.redeglobo.home.ui.tv.HomeScreenTv
+import com.gitproject.redeglobo.player.ui.PlayerScreen
 import com.gitproject.redeglobo.search.ui.SearchScreen
 import com.gitproject.redeglobo.ui.theme.RedeGloboTheme
 
@@ -27,6 +28,9 @@ fun GloboAppContent() {
                     HomeScreenTv(
                         onContentClick = { id ->
                             navController.navigate(NavigationDestination.Detail(id).createRoute())
+                        },
+                        onPlayClick = {
+                            navController.navigate(NavigationDestination.Player.route)
                         }
                     )
                 }
@@ -38,7 +42,16 @@ fun GloboAppContent() {
                     )
                 }
                 composable(NavigationDestination.Detail.ROUTE) {
-                    DetailScreen(onBackClick = { navController.popBackStack() })
+                    DetailScreenTv(
+                        onBackClick = { navController.popBackStack() },
+                        onPlayClick = { navController.navigate(NavigationDestination.Player.route) }
+                    )
+                }
+                composable(NavigationDestination.Player.route) {
+                    PlayerScreen(
+                        videoUrl = NavigationDestination.Player.VIDEO_URL,
+                        onBackClick = { navController.popBackStack() }
+                    )
                 }
             }
         }

@@ -6,8 +6,13 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import com.gitproject.redeglobo.ui.theme.GloboBlue
+import com.gitproject.redeglobo.ui.theme.GloboGray
+import com.gitproject.redeglobo.ui.theme.GloboNavBar
+import com.gitproject.redeglobo.ui.theme.GloboWhite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -19,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.gitproject.redeglobo.detail.ui.DetailScreen
 import com.gitproject.redeglobo.domain.model.NavigationDestination
 import com.gitproject.redeglobo.home.ui.mobile.HomeScreenMobile
+import com.gitproject.redeglobo.player.ui.PlayerScreen
 import com.gitproject.redeglobo.search.ui.SearchScreen
 import com.gitproject.redeglobo.ui.theme.RedeGloboTheme
 
@@ -37,13 +43,21 @@ fun GloboAppContent() {
                 } == true
 
                 if (showBottomBar) {
-                    NavigationBar {
+                    val navItemColors = NavigationBarItemDefaults.colors(
+                        selectedIconColor   = GloboWhite,
+                        selectedTextColor   = GloboWhite,
+                        indicatorColor      = GloboBlue,
+                        unselectedIconColor = GloboGray,
+                        unselectedTextColor = GloboGray
+                    )
+                    NavigationBar(containerColor = GloboNavBar) {
                         NavigationBarItem(
                             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
                             label = { Text("Home") },
                             selected = currentDestination?.hierarchy?.any {
                                 it.route == NavigationDestination.Home.route
                             } == true,
+                            colors = navItemColors,
                             onClick = {
                                 navController.navigate(NavigationDestination.Home.route) {
                                     popUpTo(navController.graph.findStartDestination().id) { saveState = true }
@@ -58,6 +72,7 @@ fun GloboAppContent() {
                             selected = currentDestination?.hierarchy?.any {
                                 it.route == NavigationDestination.Search.route
                             } == true,
+                            colors = navItemColors,
                             onClick = {
                                 navController.navigate(NavigationDestination.Search.route) {
                                     popUpTo(navController.graph.findStartDestination().id) { saveState = true }
@@ -79,6 +94,9 @@ fun GloboAppContent() {
                         onContentClick = { id ->
                             navController.navigate(NavigationDestination.Detail(id).createRoute())
                         },
+                        onPlayClick = {
+                            navController.navigate(NavigationDestination.Player.route)
+                        },
                         onSearchClick = {
                             navController.navigate(NavigationDestination.Search.route)
                         }
@@ -92,7 +110,16 @@ fun GloboAppContent() {
                     )
                 }
                 composable(NavigationDestination.Detail.ROUTE) {
-                    DetailScreen(onBackClick = { navController.popBackStack() })
+                    DetailScreen(
+                        onBackClick = { navController.popBackStack() },
+                        onPlayClick = { navController.navigate(NavigationDestination.Player.route) }
+                    )
+                }
+                composable(NavigationDestination.Player.route) {
+                    PlayerScreen(
+                        videoUrl = NavigationDestination.Player.VIDEO_URL,
+                        onBackClick = { navController.popBackStack() }
+                    )
                 }
             }
         }

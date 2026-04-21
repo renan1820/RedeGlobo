@@ -1,10 +1,12 @@
 package com.gitproject.redeglobo.search.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,16 +16,16 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +34,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,8 +46,14 @@ import coil.compose.AsyncImage
 import com.gitproject.redeglobo.domain.model.Content
 import com.gitproject.redeglobo.search.presentation.SearchUiState
 import com.gitproject.redeglobo.search.presentation.SearchViewModel
+import com.gitproject.redeglobo.ui.theme.GloboBlack
+import com.gitproject.redeglobo.ui.theme.GloboBlue
+import com.gitproject.redeglobo.ui.theme.GloboDarkCard
+import com.gitproject.redeglobo.ui.theme.GloboDarkSurface
+import com.gitproject.redeglobo.ui.theme.GloboGray
+import com.gitproject.redeglobo.ui.theme.GloboRed
+import com.gitproject.redeglobo.ui.theme.GloboWhite
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     onContentClick: (String) -> Unit,
@@ -50,64 +61,113 @@ fun SearchScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var query by remember { mutableStateOf("") }
-    var searchActive by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    Scaffold { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
-            SearchBar(
-                query = query,
-                onQueryChange = { newQuery ->
-                    query = newQuery
-                    viewModel.onQueryChanged(newQuery)
-                },
-                onSearch = { viewModel.onQueryChanged(it) },
-                active = searchActive,
-                onActiveChange = { searchActive = it },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                placeholder = { Text("Buscar personagens, séries...") },
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-            ) {}
-
-            when (val state = uiState) {
-                is SearchUiState.Idle -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) { Text("Busque por personagens e séries") }
-
-                is SearchUiState.Loading -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) { androidx.compose.material3.CircularProgressIndicator() }
-
-                is SearchUiState.Success -> SearchResultsGrid(
-                    results = state.results,
-                    onItemClick = onContentClick
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(GloboBlack)
+    ) {
+        TextField(
+            value = query,
+            onValueChange = { newQuery ->
+                query = newQuery
+                viewModel.onQueryChanged(newQuery)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .clip(RoundedCornerShape(8.dp)),
+            placeholder = { Text("Busque filmes, séries e mais", color = GloboGray) },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = GloboBlue,
+                    modifier = Modifier.size(22.dp)
                 )
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { keyboardController?.hide() }),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor      = GloboDarkSurface,
+                unfocusedContainerColor    = GloboDarkSurface,
+                focusedTextColor           = GloboWhite,
+                unfocusedTextColor         = GloboWhite,
+                cursorColor                = GloboBlue,
+                focusedIndicatorColor      = Color.Transparent,
+                unfocusedIndicatorColor    = Color.Transparent,
+                focusedLeadingIconColor    = GloboBlue,
+                unfocusedLeadingIconColor  = GloboBlue
+            )
+        )
 
-                is SearchUiState.Empty -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) { Text("Nenhum resultado para \"${state.query}\"") }
+        when (val state = uiState) {
+            is SearchUiState.Idle -> IdleState()
 
-                is SearchUiState.Error -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) { Text(text = state.message, color = MaterialTheme.colorScheme.error) }
+            is SearchUiState.Loading -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) { CircularProgressIndicator(color = GloboBlue, strokeWidth = 2.dp) }
+
+            is SearchUiState.Success -> SearchResultsGrid(
+                results = state.results,
+                onItemClick = onContentClick
+            )
+
+            is SearchUiState.Empty -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Nenhum resultado para \"${state.query}\"",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = GloboGray
+                )
+            }
+
+            is SearchUiState.Error -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = state.message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = GloboRed
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SearchResultsGrid(
-    results: List<Content>,
-    onItemClick: (String) -> Unit
-) {
+private fun IdleState() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                tint = GloboBlue,
+                modifier = Modifier.size(56.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Busque filmes, séries e mais",
+                style = MaterialTheme.typography.bodyMedium,
+                color = GloboGray
+            )
+        }
+    }
+}
+
+@Composable
+private fun SearchResultsGrid(results: List<Content>, onItemClick: (String) -> Unit) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(results) { content ->
             SearchResultCard(content = content, onClick = { onItemClick(content.id) })
@@ -117,28 +177,27 @@ private fun SearchResultsGrid(
 
 @Composable
 private fun SearchResultCard(content: Content, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier.clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(8.dp)
+    Column(
+        modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(GloboDarkCard)
+            .clickable(onClick = onClick)
     ) {
-        Column {
-            AsyncImage(
-                model = content.thumbnailUrl,
-                contentDescription = content.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = content.title,
-                style = MaterialTheme.typography.bodySmall,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(6.dp)
-            )
-        }
+        AsyncImage(
+            model = content.thumbnailUrl,
+            contentDescription = content.title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = content.title,
+            style = MaterialTheme.typography.bodySmall,
+            color = GloboWhite,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp)
+        )
     }
 }
