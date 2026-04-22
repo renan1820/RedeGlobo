@@ -21,6 +21,15 @@ streaming catalog simulation — characters become titles, episodes become episo
 categories.
 
 ---
+## 📱 Demonstração do Projeto
+
+Para visualizar o funcionamento do sistema em ambas as plataformas, confira os vídeos abaixo:
+
+### 📺 Android TV
+<video src="https://github.com/user-attachments/assets/ab47982d-630f-47df-adc4-94a967fa9d23" width="800" controls></video>
+
+### 📱 Mobile Android
+<video src="https://github.com/user-attachments/assets/ac3f0d82-8459-4fa6-b9ee-78cab8eee4d9" width="300" controls></video>
 
 ## Architecture
 
