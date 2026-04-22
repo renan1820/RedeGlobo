@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Globo G — arco ~300° (abertura no canto superior-direito) + barra horizontal
+    Viewport 108x108, safe-zone 72x72 (centrado em 54,54)
+    Círculo raio 26, strokeWidth 8 → diâmetro visível ~60dp — cabe bem no safe-zone
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
     <!--
-        Globo "G" — arco quase completo (abertura à direita) + barra horizontal entrando ao centro.
-        Centro: (54, 54). Raio externo ~28. strokeWidth 9.
+        G path:
+          M 80,54           → ponto à direita do círculo (3h)
+          A 26,26 0 1,1 73,73  → arco grande antihorário até 4h30 (~135° abaixo de horizontal)
+          L 54,73           → barra horizontal do G (da borda ao centro)
+          L 54,61           → barra sobe ao centro vertical (serif do G)
+
+        O arco cobre ~300° deixando a abertura de ~60° no lado superior-direito.
     -->
     <path
-        android:pathData="M82,54 A28,28 0 1,1 76.8,75.8 L54,75.8 L54,61.5"
+        android:pathData="
+            M80,54
+            A26,26 0 1,1 72.4,72.4
+            L54,72.4
+            L54,60"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="9"
+        android:strokeWidth="8"
         android:fillColor="@android:color/transparent"
         android:strokeLineCap="round"
         android:strokeLineJoin="round" />

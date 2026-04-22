@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -40,10 +41,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.gitproject.redeglobo.ui.theme.RedeGloboTheme
 import com.gitproject.redeglobo.domain.model.Content
+import com.gitproject.redeglobo.domain.model.ContentStatus
 import com.gitproject.redeglobo.search.presentation.SearchUiState
 import com.gitproject.redeglobo.search.presentation.SearchViewModel
 import com.gitproject.redeglobo.ui.theme.GloboBlack
@@ -67,6 +71,7 @@ fun SearchScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(GloboBlack)
+            .statusBarsPadding()
     ) {
         TextField(
             value = query,
@@ -140,6 +145,33 @@ fun SearchScreen(
         }
     }
 }
+
+// ─── Previews ────────────────────────────────────────────────────────────────
+
+private val previewSearchResults = List(6) {
+    Content(
+        id = "$it", title = listOf("Rick e Morty", "Dragon Ball Z", "Naruto Shippuden",
+            "Attack on Titan", "One Piece", "Demon Slayer")[it],
+        thumbnailUrl = "", status = ContentStatus.ALIVE,
+        genre = "Animação", originName = "Japão", episodeCount = 100 + it * 24
+    )
+}
+
+@Preview(name = "Search — Idle", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun SearchIdlePreview() {
+    RedeGloboTheme { IdleState() }
+}
+
+@Preview(name = "Search — Resultados", showBackground = true, backgroundColor = 0xFF000000, heightDp = 700)
+@Composable
+private fun SearchResultsPreview() {
+    RedeGloboTheme {
+        SearchResultsGrid(results = previewSearchResults, onItemClick = {})
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 private fun IdleState() {

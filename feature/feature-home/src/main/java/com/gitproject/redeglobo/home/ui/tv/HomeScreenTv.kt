@@ -41,14 +41,17 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.OutlinedButton
 import androidx.tv.material3.Surface
 import androidx.tv.material3.Text
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import com.gitproject.redeglobo.domain.model.Content
 import com.gitproject.redeglobo.domain.model.ContentRail
+import com.gitproject.redeglobo.domain.model.ContentStatus
 import com.gitproject.redeglobo.home.presentation.HomeUiState
 import com.gitproject.redeglobo.home.presentation.HomeViewModel
 import com.gitproject.redeglobo.ui.theme.GloboBlack
 import com.gitproject.redeglobo.ui.theme.GloboBlue
 import com.gitproject.redeglobo.ui.theme.GloboDarkCard
+import com.gitproject.redeglobo.ui.theme.GloboDarkGray
 import com.gitproject.redeglobo.ui.theme.GloboGray
 import com.gitproject.redeglobo.ui.theme.GloboRed
 import com.gitproject.redeglobo.ui.theme.GloboWhite
@@ -163,7 +166,16 @@ private fun TvHeroBanner(content: Content, onPlayClick: () -> Unit) {
                 }
                 OutlinedButton(
                     onClick = {},
-                    shape = androidx.tv.material3.OutlinedButtonDefaults.shape(shape = RoundedCornerShape(4.dp))
+                    shape = androidx.tv.material3.OutlinedButtonDefaults.shape(
+                        shape = RoundedCornerShape(4.dp),
+                        focusedShape = RoundedCornerShape(4.dp),
+                        pressedShape = RoundedCornerShape(4.dp)
+                    ),
+                    colors = androidx.tv.material3.OutlinedButtonDefaults.colors(
+                        contentColor = GloboWhite,
+                        focusedContentColor = GloboWhite,
+                        focusedContainerColor = GloboDarkGray
+                    )
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(20.dp))
                     Spacer(modifier = Modifier.width(6.dp))
@@ -246,4 +258,54 @@ private fun TvErrorState(message: String, onRetry: () -> Unit) {
             ) { Text("Tentar novamente") }
         }
     }
+}
+
+// ─── Previews ────────────────────────────────────────────────────────────────
+
+private val previewTvContent = Content(
+    id = "1", title = "Rick e Morty", thumbnailUrl = "",
+    status = ContentStatus.ALIVE, genre = "Animação", originName = "Terra", episodeCount = 51
+)
+private val previewTvRails = listOf(
+    ContentRail("Em Alta", List(5) { previewTvContent.copy(id = "$it") }),
+    ContentRail("Séries", List(5) { previewTvContent.copy(id = "${it + 10}", title = "Dragon Ball Z") }),
+    ContentRail("Filmes", List(5) { previewTvContent.copy(id = "${it + 20}", title = "Filme $it") })
+)
+
+@OptIn(ExperimentalTvMaterial3Api::class)
+@Preview(
+    name = "TV — Home (720p)",
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    device = "spec:width=1280dp,height=720dp,dpi=213"
+)
+@Composable
+private fun TvHomeContentPreview() {
+    MaterialTheme {
+        TvHomeContent(rails = previewTvRails, onItemClick = {}, onPlayClick = {})
+    }
+}
+
+@OptIn(ExperimentalTvMaterial3Api::class)
+@Preview(
+    name = "TV — Loading",
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    device = "spec:width=1280dp,height=720dp,dpi=213"
+)
+@Composable
+private fun TvLoadingPreview() {
+    MaterialTheme { TvLoadingState() }
+}
+
+@OptIn(ExperimentalTvMaterial3Api::class)
+@Preview(
+    name = "TV — Erro",
+    showBackground = true,
+    backgroundColor = 0xFF000000,
+    device = "spec:width=1280dp,height=720dp,dpi=213"
+)
+@Composable
+private fun TvErrorPreview() {
+    MaterialTheme { TvErrorState(message = "Falha ao carregar conteúdo", onRetry = {}) }
 }

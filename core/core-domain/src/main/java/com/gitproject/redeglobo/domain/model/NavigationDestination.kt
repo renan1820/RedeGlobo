@@ -1,6 +1,7 @@
 package com.gitproject.redeglobo.domain.model
 
 sealed class NavigationDestination(val route: String) {
+    data object Login : NavigationDestination("login")
     data object Home : NavigationDestination("home")
     data object Search : NavigationDestination("search")
     data object Watchlist : NavigationDestination("watchlist")

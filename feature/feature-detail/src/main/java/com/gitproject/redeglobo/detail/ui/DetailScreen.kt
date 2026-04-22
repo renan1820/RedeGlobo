@@ -38,14 +38,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.gitproject.redeglobo.ui.theme.RedeGloboTheme
 import com.gitproject.redeglobo.detail.presentation.DetailUiState
 import com.gitproject.redeglobo.detail.presentation.DetailViewModel
 import com.gitproject.redeglobo.domain.model.ContentDetail
+import com.gitproject.redeglobo.domain.model.ContentLocation
 import com.gitproject.redeglobo.domain.model.ContentStatus
 import com.gitproject.redeglobo.domain.model.Episode
+import com.gitproject.redeglobo.domain.model.Origin
 import com.gitproject.redeglobo.ui.theme.GloboBlack
 import com.gitproject.redeglobo.ui.theme.GloboBlue
 import com.gitproject.redeglobo.ui.theme.GloboDarkCard
@@ -174,6 +178,59 @@ private fun DetailContent(
         item { Spacer(modifier = Modifier.height(24.dp)) }
     }
 }
+
+// ─── Previews ────────────────────────────────────────────────────────────────
+
+private val previewDetail = ContentDetail(
+    id = "1", title = "Rick Sanchez", posterUrl = "",
+    status = ContentStatus.ALIVE, genre = "Sci-Fi / Animação", type = "Personagem", gender = "Masculino",
+    origin = Origin("1", "Terra C-137", "Planet", "Dimension C-137"),
+    location = ContentLocation("1", "Citadela dos Ricks", "Space Station"),
+    episodes = listOf(
+        Episode("1", "Piloto", "S01E01", "02 Dez 2013"),
+        Episode("2", "Lawnmower Dog", "S01E02", "09 Dez 2013"),
+        Episode("3", "Anatomy Park", "S01E03", "16 Dez 2013")
+    ),
+    createdAt = "2017-11-04"
+)
+
+@Preview(name = "Detail — Conteúdo", showBackground = true, backgroundColor = 0xFF000000, heightDp = 900)
+@Composable
+private fun DetailContentPreview() {
+    RedeGloboTheme {
+        DetailContent(
+            detail = previewDetail,
+            isInWatchlist = false,
+            onWatchlistToggle = {},
+            onPlayClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview(name = "Detail — Na Minha Lista", showBackground = true, backgroundColor = 0xFF000000, heightDp = 900)
+@Composable
+private fun DetailContentInWatchlistPreview() {
+    RedeGloboTheme {
+        DetailContent(
+            detail = previewDetail.copy(status = ContentStatus.DEAD, title = "Morty Smith"),
+            isInWatchlist = true,
+            onWatchlistToggle = {},
+            onPlayClick = {},
+            onBackClick = {}
+        )
+    }
+}
+
+@Preview(name = "Detail — Episódio", showBackground = true, backgroundColor = 0xFF121212)
+@Composable
+private fun EpisodeItemPreview() {
+    RedeGloboTheme {
+        EpisodeItem(episode = Episode("1", "Piloto — Primeiro episódio da série", "S01E01", "02 Dez 2013"))
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 private fun HeroSection(detail: ContentDetail) {

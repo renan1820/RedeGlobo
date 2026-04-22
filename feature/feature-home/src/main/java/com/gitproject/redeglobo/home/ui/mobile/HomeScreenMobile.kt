@@ -39,9 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.gitproject.redeglobo.ui.theme.RedeGloboTheme
 import com.gitproject.redeglobo.domain.model.Content
 import com.gitproject.redeglobo.domain.model.ContentRail
 import com.gitproject.redeglobo.domain.model.ContentStatus
@@ -245,6 +247,56 @@ private fun StatusBadge(status: ContentStatus, modifier: Modifier = Modifier) {
         Text(text = label, style = MaterialTheme.typography.labelSmall, color = GloboWhite)
     }
 }
+
+// ─── Previews ────────────────────────────────────────────────────────────────
+
+private val previewContent = Content(
+    id = "1", title = "Rick e Morty", thumbnailUrl = "",
+    status = ContentStatus.ALIVE, genre = "Animação", originName = "Terra", episodeCount = 51
+)
+private val previewRails = listOf(
+    ContentRail("Em Alta", List(4) { previewContent.copy(id = "$it") }),
+    ContentRail("Séries", List(4) { previewContent.copy(id = "${it + 10}", title = "Dragon Ball Z") }),
+    ContentRail("Filmes", List(4) { previewContent.copy(id = "${it + 20}", title = "Filme $it") })
+)
+
+@Preview(name = "Home — Conteúdo", showBackground = true, backgroundColor = 0xFF000000, heightDp = 900)
+@Composable
+private fun HomeContentPreview() {
+    RedeGloboTheme {
+        HomeContent(rails = previewRails, onItemClick = {}, onPlayClick = {})
+    }
+}
+
+@Preview(name = "Home — Hero Banner", showBackground = true, backgroundColor = 0xFF000000, widthDp = 360, heightDp = 420)
+@Composable
+private fun HeroBannerPreview() {
+    RedeGloboTheme {
+        HeroBanner(content = previewContent, onPlayClick = {})
+    }
+}
+
+@Preview(name = "Home — Card", showBackground = true, backgroundColor = 0xFF000000, widthDp = 106)
+@Composable
+private fun ContentCardPreview() {
+    RedeGloboTheme {
+        ContentCard(content = previewContent, onClick = {})
+    }
+}
+
+@Preview(name = "Home — Loading", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun HomeLoadingPreview() {
+    RedeGloboTheme { LoadingState() }
+}
+
+@Preview(name = "Home — Erro", showBackground = true, backgroundColor = 0xFF000000)
+@Composable
+private fun HomeErrorPreview() {
+    RedeGloboTheme { ErrorState(message = "Falha ao carregar conteúdo", onRetry = {}) }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 @Composable
 private fun LoadingState() {

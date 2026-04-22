@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>📺 Globoplay Android</h1>
+  <h1>📺 Globeplay Android</h1>
   <p>Portfolio app demonstrating enterprise-grade Android architecture for Rede Globo technical interview</p>
 
   ![Build](https://github.com/renan1820/RedeGlobo/actions/workflows/ci.yml/badge.svg)

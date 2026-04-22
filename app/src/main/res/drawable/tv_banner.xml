@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Fundo preto -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="#000000" />
-        </shape>
-    </item>
-    <!-- Barra azul Globo à esquerda -->
-    <item
-        android:width="90dp"
-        android:gravity="left">
-        <shape android:shape="rectangle">
-            <solid android:color="#003DA5" />
-        </shape>
-    </item>
-</layer-list>
+<!--
+    TV home-screen banner — 320×180dp
+    Same design as the app launcher: Globo Blue #003DA5 + white G
+    G arc: radius 40, center (160,90), scaled from launcher's 108×108/r26 source
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+
+    <!-- Blue background -->
+    <path
+        android:fillColor="#003DA5"
+        android:pathData="M0,0 L320,0 L320,180 L0,180 Z" />
+
+    <!--
+        G path scaled from launcher (108×108, center 54,54, radius 26) to banner (center 160,90, radius 40):
+          scale = 40/26 = 1.5385
+          M(80,54)  → (200, 90)
+          arc end (72.4,72.4) → (188.3, 118.3)
+          L(54,72.4) → (160, 118.3)
+          L(54,60)   → (160, 99.2)
+          strokeWidth 8 × 1.5385 ≈ 12
+    -->
+    <path
+        android:pathData="M200,90 A40,40 0 1,1 188.3,118.3 L160,118.3 L160,99.2"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="12"
+        android:fillColor="@android:color/transparent"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+</vector>

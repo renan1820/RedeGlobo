@@ -23,9 +23,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -173,6 +177,9 @@ private fun TvHeroSection(
     onPlayClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
+    val backFocusRequester = remember { FocusRequester() }
+    LaunchedEffect(Unit) { backFocusRequester.requestFocus() }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -222,7 +229,9 @@ private fun TvHeroSection(
                     focusedContentColor = GloboWhite
                 ),
                 shape = ButtonDefaults.shape(shape = RoundedCornerShape(4.dp)),
-                modifier = Modifier.height(38.dp)
+                modifier = Modifier
+                    .height(38.dp)
+                    .focusRequester(backFocusRequester)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -278,7 +287,16 @@ private fun TvHeroSection(
                 }
                 OutlinedButton(
                     onClick = onWatchlistToggle,
-                    shape = OutlinedButtonDefaults.shape(shape = RoundedCornerShape(4.dp))
+                    shape = OutlinedButtonDefaults.shape(
+                        shape = RoundedCornerShape(4.dp),
+                        focusedShape = RoundedCornerShape(4.dp),
+                        pressedShape = RoundedCornerShape(4.dp)
+                    ),
+                    colors = OutlinedButtonDefaults.colors(
+                        contentColor = GloboWhite,
+                        focusedContentColor = GloboWhite,
+                        focusedContainerColor = GloboDarkGray
+                    )
                 ) {
                     Icon(
                         imageVector = if (isInWatchlist) Icons.Default.Check else Icons.Default.Add,
